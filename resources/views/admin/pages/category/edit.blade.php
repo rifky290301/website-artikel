@@ -14,7 +14,7 @@
       @csrf
       @method('patch')
       <div class="form-group">
-        <label for="category">Nama kategori<span class="required-starr">*</span></label>
+        <label for="category">Nama kategori<span class="required-star">*</span></label>
         <input value="{{ $category->name }}" name="name" type="text" class="form-control" id="category" placeholder="kategori...">
       </div>
       <button type="submit" class="btn btn-primary">Simpan</button>

@@ -16,17 +16,26 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/admin', [App\Http\Controllers\Admin\PostController::class, 'dashboard']);
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+    'verify' => false,
+]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact']);
+Route::get('/about', [App\Http\Controllers\HomeController::class, 'about']);
+Route::get('/category/{id}', [App\Http\Controllers\HomeController::class, 'category']);
+Route::get('/tag/{id}', [App\Http\Controllers\HomeController::class, 'tag']);
+Route::get('/baca/{slug}', [App\Http\Controllers\HomeController::class, 'show']);
 
 
-Route::prefix('admin')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\PostController::class, 'dashboard']);
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
+    Route::get('/dashboard', [App\Http\Controllers\Admin\PostController::class, 'dashboard']);
 
     Route::prefix('artikel')->group(function () {
         Route::get('/', [App\Http\Controllers\Admin\PostController::class, 'index']);
@@ -56,6 +65,6 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-// Route::group(['prefix' => 'admin'], function () {
-//     Route::get('/', [App\Http\Controllers\Admin\PostController::class, 'dashboard']);
-// });
+Route::get('/{any}', function () {
+    return view('home');
+})->where('any', '.*');

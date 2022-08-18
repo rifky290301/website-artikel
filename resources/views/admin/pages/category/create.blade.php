@@ -13,7 +13,7 @@
     <form action="/admin/kategori" method="post">
       @csrf
       <div class="form-group">
-        <label for="category">Nama kategori<span class="required-starr">*</span></label>
+        <label for="category">Nama kategori<span class="required-star">*</span></label>
         <input name="name" type="category" class="form-control" id="category" placeholder="kategori...">
       </div>
       <button type="submut" class="btn btn-primary">Simpan</button>

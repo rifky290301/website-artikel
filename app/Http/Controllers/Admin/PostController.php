@@ -11,6 +11,11 @@ use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
+    public function dashboard()
+    {
+        return view('admin.pages.index');
+    }
+
     public function index()
     {
         $posts = Post::latest()->get();
@@ -39,7 +44,7 @@ class PostController extends Controller
         $request->file('thumbnail')->move('upload/post', $date . $request->file('thumbnail')->getClientOriginalName());
         $request->thumbnail = $date . $request->file('thumbnail')->getClientOriginalName();
 
-        Post::create([
+        $post = Post::create([
             'author' => $request->author,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
@@ -49,6 +54,8 @@ class PostController extends Controller
             'category_id' => $request->category_id,
             'user_id' => auth()->user()->id,
         ]);
+
+        $post->tags()->attach($request->tags);
 
         return redirect('/admin/artikel')->with('success', "Post $request->title berhasil ditambahkan!");
     }
@@ -67,34 +74,42 @@ class PostController extends Controller
             'author' => 'required|string',
             'title' => 'required|string',
             'content' => 'required|string',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'status' => 'required|string',
             'category_id' => 'required',
         ]);
-        $date = date('H-i-s');
-        $request->file('thumbnail')->move('upload/post', $date . $request->file('thumbnail')->getClientOriginalName());
-        $request->thumbnail = $date . $request->file('thumbnail')->getClientOriginalName();
+
         $post = Post::find($id);
 
-        $path = "upload/post/" . $post->thumbnail;
-        unlink($path);
+        if ($request->file('thumbnail')) {
+            $date = date('H-i-s');
+            $request->file('thumbnail')->move('upload/post', $date . $request->file('thumbnail')->getClientOriginalName());
+            $request->thumbnail = $date . $request->file('thumbnail')->getClientOriginalName();
+            $path = "upload/post/" . $post->thumbnail;
+            unlink($path);
+            $post->thumbnail = $request->thumbnail;
+        }
 
         $post->update([
             'author' => $request->author,
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
-            'thumbnail' => $request->thumbnail,
             'status' => $request->status,
             'category_id' => $request->category_id,
             'user_id' => auth()->user()->id,
         ]);
+
+        $post->tags()->sync($request->tags);
+
         return redirect('/admin/artikel')->with('success', "Post $request->title berhasil diupdate!");
     }
 
     public function destroy($id)
     {
         $post = Post::find($id);
+        $post->tags()->detach();
+        $path = "upload/post/" . $post->thumbnail;
+        unlink($path);
         $post->delete();
         return redirect('/admin/artikel')->with('success', "Post $post->title berhasil dihapus!");
     }
