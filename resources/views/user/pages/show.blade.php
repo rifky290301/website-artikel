@@ -19,7 +19,7 @@
         </div>
         <ul class="aside-tags list-unstyled">
           @foreach($post->tags as $item)
-          <li><a href="/category/2">{{ $item->tag->name }}</a></li>
+          <li><a href="/category">{{ $item->tag->name }}</a></li>
           @endforeach
         </ul>
       </div>

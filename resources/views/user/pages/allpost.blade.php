@@ -110,6 +110,6 @@
   </div>
 </section>
 @else
-<p>Kategori belum ada</p>
+Kategori belum ada
 @endif
 @endsection

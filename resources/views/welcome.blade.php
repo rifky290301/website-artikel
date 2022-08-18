@@ -118,7 +118,7 @@
   <div class="container" data-aos="fade-up">
     <div class="section-header d-flex justify-content-between align-items-center mb-5">
       <h2>Jelajahi</h2>
-      <div><a href="/category/2" class="more">Lihat semua</a></div>
+      <div><a href="/category" class="more">Lihat semua</a></div>
     </div>
     <div class="row">
       <div class="col-md-9">

@@ -30,6 +30,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/contact', [App\Http\Controllers\HomeController::class, 'contact']);
 Route::get('/about', [App\Http\Controllers\HomeController::class, 'about']);
 Route::get('/category/{id}', [App\Http\Controllers\HomeController::class, 'category']);
+Route::get('/search', [App\Http\Controllers\HomeController::class, 'search']);
 Route::get('/tag/{id}', [App\Http\Controllers\HomeController::class, 'tag']);
 Route::get('/baca/{slug}', [App\Http\Controllers\HomeController::class, 'show']);
 
@@ -66,5 +67,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 });
 
 Route::get('/{any}', function () {
-    return view('home');
+    return abort(404);;
 })->where('any', '.*');

@@ -12,24 +12,24 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $firstPost = Post::with('category')->first();
-        $sliders = Post::latest()->take(3)->get();
-        $articles = Post::latest()->take(3)->get();
-        $news = Post::latest()->take(3)->get();
-        $latest = Post::latest()->take(5)->get();
+        $firstPost = Post::with('category')->where('status', 'publish')->first();
+        $sliders = Post::where('status', 'publish')->latest()->take(3)->get();
+        $articles = Post::where('status', 'publish')->latest()->take(3)->get();
+        $news = Post::where('status', 'publish')->latest()->take(3)->get();
+        $latest = Post::where('status', 'publish')->latest()->take(5)->get();
 
-        $random1 = Post::inRandomOrder()->first();
-        $random1_2 = Post::inRandomOrder()->first();
-        $random2 = Post::inRandomOrder()->limit(2)->get();
-        $random3 = Post::inRandomOrder()->limit(5)->get();
+        $random1 = Post::inRandomOrder()->where('status', 'publish')->first();
+        $random1_2 = Post::inRandomOrder()->where('status', 'publish')->first();
+        $random2 = Post::inRandomOrder()->where('status', 'publish')->limit(2)->get();
+        $random3 = Post::inRandomOrder()->where('status', 'publish')->limit(5)->get();
 
         return view('welcome', compact('sliders', 'firstPost', 'articles', 'news', 'latest', 'random1', 'random1_2', 'random2', 'random3'));
     }
 
     public function show($slug)
     {
-        $popular = Post::inRandomOrder()->limit(5)->get();
-        $latest = Post::latest()->take(5)->get();
+        $popular = Post::inRandomOrder()->where('status', 'publish')->limit(5)->get();
+        $latest = Post::where('status', 'publish')->latest()->take(5)->get();
         $categories = Category::latest()->get();
         $tags = Tag::latest()->get();
 
@@ -58,13 +58,29 @@ class HomeController extends Controller
 
     public function category($id)
     {
+        $popular = Post::inRandomOrder()->where('status', 'publish')->limit(5)->get();
+        $latest = Post::where('status', 'publish')->latest()->take(5)->get();
+        $categories = Category::latest()->get();
+        $tags = Tag::latest()->get();
+
+        $posts = Post::with('category')->where('category_id', $id)->paginate(5);
+        return view('user.pages.category', compact('posts', 'popular', 'latest', 'categories', 'tags'));
+    }
+
+    public function search(Request $request)
+    {
         $popular = Post::inRandomOrder()->limit(5)->get();
         $latest = Post::latest()->take(5)->get();
         $categories = Category::latest()->get();
         $tags = Tag::latest()->get();
 
-        $posts = Post::with('category')->where('category_id', $id)->paginate(5);
-        return view('user.pages.category', compact('posts', 'popular', 'latest', 'categories', 'tags', 'id'));
+        $searchWord = $request->get('s');
+        $posts = Post::where(function ($query) use ($searchWord) {
+            $query->where('title', 'LIKE', "%$searchWord%")
+                ->orWhere('author', 'LIKE', "%$searchWord%")
+                ->orWhere('content', 'LIKE', "%$searchWord%");
+        })->with('category')->paginate(5);
+        return view('user.pages.allpost', compact('posts', 'popular', 'latest', 'categories', 'tags'));
     }
 
     public function about()
