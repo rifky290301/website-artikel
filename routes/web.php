@@ -67,5 +67,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:web'], function () {
 });
 
 Route::get('/{any}', function () {
-    return abort(404);;
+    return abort(404);
 })->where('any', '.*');
