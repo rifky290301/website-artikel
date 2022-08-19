@@ -6,12 +6,12 @@
 
 @section('content')
 <div class="mb-2 d-flex justify-content-between">
-  <h1 class="h3 text-gray-800">Tabel artikel</h1>
+  <h1 class="h3 text-gray-800">Tabel post</h1>
   <a href="/admin/artikel/tambah" class="btn btn-primary btn-icon-split">
     <span class="icon text-white-50">
       <i class="fas fa-plus"></i>
     </span>
-    <span class="text">Tambah artikel</span>
+    <span class="text">Tambah post</span>
   </a>
 </div>
 <div class="card-body">
