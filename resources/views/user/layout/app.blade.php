@@ -23,11 +23,11 @@
   <link href="{{ asset('user/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
   <link href="{{ asset('user/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
   <link href="{{ asset('user/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
-  <link href="/user/vendor/aos/aos.css'" rel="stylesheet">
+  <link href="/user/vendor/aos/aos.css" rel="stylesheet">
 
   <!-- Template Main CSS Files -->
   <link href="{{ asset('user/css/variables.css') }}" rel="stylesheet">
-  <link href="{{ asset('user/css/main.css') }}" rel="stylesheet">
+  <link href="/user/css/main.css" rel="stylesheet">
 
 </head>
 
