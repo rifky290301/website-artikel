@@ -7,7 +7,7 @@
       <ul>
         <li><a href="/">Beranda</a></li>
         <li><a href="/search">Kategori</a></li>
-        <li><a href="/about">About</a></li>
+        {{-- <li><a href="/about">About</a></li> --}}
         <li><a href="/contact">Contact</a></li>
       </ul>
     </nav>
